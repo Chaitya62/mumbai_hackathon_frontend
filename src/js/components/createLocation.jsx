@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
+import {Link} from 'react-router-dom';
 import Navbar from './Navbar.jsx';
 import Canvas from './Canvas.jsx';
 import imageT from '../../images/images.jpg';
 import DetailForm from './DetailForm.jsx';
 import Graph from './graph.js';
+import dataSingleton from './dataSingleton.js';
 
 
 var img = {
@@ -18,12 +20,16 @@ export default class createLocation extends Component {
 	constructor(props) {
 		super(props);
 
+
+		var currFloor = dataSingleton.getObj('currFloor');
+		var graphs = dataSingleton.getObj('graphs');
+
 		this.state={
 
 			'items': [
 			'test1', 'test2','test3'
 			],
-			'graph': Graph(),
+			'graph': graphs[currFloor],
 			'detailForm': false,
 			moveEnable: false,
 
@@ -49,6 +55,11 @@ export default class createLocation extends Component {
 
 	updateGraph(graph){
 		this.setState({'graph' : graph });
+		var currFloor = dataSingleton.getObj('currFloor');
+		var graphs = dataSingleton.getObj('graphs');
+		graphs[currFloor] = graph;
+		dataSingleton.setObj('graphs', graphs);
+		return;
 
 	}
 
@@ -61,6 +72,11 @@ export default class createLocation extends Component {
 
 		return (
     <div>
+    	<h2>
+    		
+    		<Link to="/" >Back</Link>
+
+    	</h2>
 	  <div className="row">
 	  	<div className="col-lg-3">
 	  		{

@@ -9,7 +9,7 @@ export default class App extends React.Component {
 
   constructor(props) {
     super(props);
-    dataSingleton.setObj('hello', 'what');
+    dataSingleton.setObj('graphs', []);
   }
 
   render() {

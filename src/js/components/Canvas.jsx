@@ -50,6 +50,7 @@ export default class Canvas extends React.Component {
 
 	componentDidMount() {
 		this.updateCanvas();
+		this.drawAll2();
 		
 	}
 
