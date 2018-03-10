@@ -10,7 +10,8 @@ export default class Canvas extends React.Component {
 		this.state = {
 			height: '600',
 			width: '600',
-			items: this.props.graph,
+			items: [],
+			graph: this.props.graph
 		}
 
 	}
@@ -55,7 +56,51 @@ export default class Canvas extends React.Component {
 	componentDidUpdate(){
 		this.ctx.clearRect(0,0,this.refs.canva.width,this.refs.canva.height);
 		this.updateCanvas();
-		this.drawAll()
+		this.drawAll2();
+	}
+
+
+
+	getActiveNode(){
+		var {graph} = this.state;
+
+		var n = graph.getVertices();
+		var vals = graph.vals;
+
+
+		for(var i = 0;i<n;i++){
+			if(vals[i].isActive){
+				return i;
+			}
+		}
+
+		return -1;
+	}
+
+	preventDefault2(ev){
+
+
+		console.log('heas');
+
+		var x = ev.clientX-this.rect.left;
+		var y = ev.clientY-this.rect.top;
+
+		var vals = this.state.graph.vals;
+
+
+		var i = this.getActiveNode();
+		if(i != -1) {
+			var curr = vals[i];
+
+			this.ctx.clearRect(0,0,this.refs.canva.width,this.refs.canva.height);
+			this.updateCanvas();
+				
+			this.drawLine(curr.itemx, curr.itemy, x, y, 'black');
+			this.drawAll2();
+		}
+
+		ev.preventDefault();
+
 	}
 
 	preventDefault(ev){
@@ -93,46 +138,141 @@ export default class Canvas extends React.Component {
 		this.drawAll();
 	}
 
-	drawAll(){
 
-		var tempArr = this.state.items;
+	drawAll2(){
+
+		var graph = this.state.graph;
+		var adj = graph.adj;
+		var n = graph.getVertices();
+
+		if(n == 0) return;
+		
+		var vals = graph.vals;
+
+		var q = [];
+		var visited = [];
+
+		
+		for(var i = 0;i<n;i++){
+			visited.push(false);
+		}
 
 
+		q.push(0);
 
-	//	console.log('idhar walal');
-	//	console.log(tempArr);
-		if(tempArr.length == 0) return;
-		if(tempArr[0].isActive){
+		while(q.length > 0){
+
+			var idx = q.shift();
+
 			
-			this.ctx.fillStyle = 'white';
-			this.ctx.fillRect(tempArr[0].itemx-20, tempArr[0].itemy-20,40, 40);
+			adj.get(idx).forEach((cidx)=>{
+				if(visited[cidx] == false){
+					//console.log(cidx);
+					visited[cidx] = true;
+					this.drawLine(vals[idx].itemx, vals[idx].itemy, vals[cidx].itemx, vals[cidx].itemy);
+					
+					q.push(cidx);					
+				}
+			});
 
 		}
 
-		for(var i = 1;i<tempArr.length;i++){
-			this.drawLine(tempArr[i-1].itemx, tempArr[i-1].itemy, tempArr[i].itemx, tempArr[i].itemy);
+
+		
+		q = [];
+		visited = [];
+
+		
+		
+
+		for(var i = 0;i<n;i++){
+			visited.push(false);
+		}
+
+		console.log(vals);
+		visited[0] = true;
+		if(vals[0].isActive){
+			this.ctx.fillStyle = 'white';
+			this.ctx.fillRect(vals[0].itemx-20, vals[0].itemy-20,40, 40);
+
+		}
+		this.putItem(this.props.img[vals[0].item], vals[0].itemx, vals[0].itemy);
+
+		//console.log('its here');
+
+		q.push(0);
+
+		while(q.length > 0){
+
+			var idx = q.shift();
+
+			
+			adj.get(idx).forEach((cidx)=>{
+				if(visited[cidx] == false){
+					//console.log(cidx);
+					visited[cidx] = true;
+					//this.drawLine(vals[idx].itemx, vals[idx].itemy, vals[cidx].itemx, vals[cidx].itemy);
+					
+					if(vals[cidx].isActive){
+						this.ctx.fillStyle = 'white';
+						this.ctx.fillRect(vals[cidx].itemx-20, vals[cidx].itemy-20,40, 40);
+
+					}
+
+					this.putItem(this.props.img[vals[cidx].item], vals[cidx].itemx, vals[cidx].itemy);
+					
+					q.push(cidx);					
+				}
+			});
+
 		}
 
 
-		this.putItem(this.props.img[tempArr[0].item], tempArr[0].itemx, tempArr[0].itemy);
-		for(var i = 1;i<tempArr.length; i++){
+
+
+
+
+
+	}
+
+	// drawAll(){
+
+	// 	var tempArr = this.state.items;
+
+
+
+	// //	console.log('idhar walal');
+	// //	console.log(tempArr);
+	// 	if(tempArr.length == 0) return;
+	// 	if(tempArr[0].isActive){
 			
-			if(tempArr[i].isActive){
+	
+	// 	}
+
+	// 	for(var i = 1;i<tempArr.length;i++){
+	// 		this.drawLine(tempArr[i-1].itemx, tempArr[i-1].itemy, tempArr[i].itemx, tempArr[i].itemy);
+	// 	}
+
+
+	// 	this.putItem(this.props.img[tempArr[0].item], tempArr[0].itemx, tempArr[0].itemy);
+	// 	for(var i = 1;i<tempArr.length; i++){
 			
-			this.ctx.fillStyle = 'white';
-			this.ctx.fillRect(tempArr[i].itemx-20, tempArr[i].itemy-20,40, 40);
+	// 		if(tempArr[i].isActive){
 			
-			}
-			this.putItem(this.props.img[tempArr[i].item], tempArr[i].itemx, tempArr[i].itemy);
+	// 		this.ctx.fillStyle = 'white';
+	// 		this.ctx.fillRect(tempArr[i].itemx-20, tempArr[i].itemy-20,40, 40);
+			
+	// 		}
+	// 		this.putItem(this.props.img[tempArr[i].item], tempArr[i].itemx, tempArr[i].itemy);
 			
 							
 
-		}
+	// 	}
 
 
 
-		return;
-	}
+	// 	return;
+	// }
 
 
 	drawLine(x1,y1,x2,y2, color){
@@ -149,6 +289,34 @@ export default class Canvas extends React.Component {
 
 
 
+	drop2(ev){
+		ev.preventDefault();
+
+		console.log('hello world');
+		
+		const item = ev.dataTransfer.getData('text');
+	//	console.log(ev.clientX);
+	
+		var itemObj = {'item': item, itemx: ev.clientX-this.rect.left, itemy: ev.clientY-this.rect.top, isActive: true}
+
+		var i = this.getActiveNode();
+		var {graph} = this.state;
+
+		graph.addNode(itemObj);
+
+		if(i != -1){
+			graph.vals[i].isActive = false;
+			graph.addEdge(i, graph.getVertices()-1);
+		}
+
+		console.log('hello');
+
+		this.setState({graph: graph});
+
+		this.props.updateGraph(graph);
+
+
+	}
 	
 
 
@@ -196,7 +364,9 @@ export default class Canvas extends React.Component {
 		//console.log(x);
 		//console.log(y);
 
-		var tempArr = this.state.items;
+
+		var {graph} = this.state;
+		var tempArr = this.state.graph.vals;
 
 		for(var i = 0;i<tempArr.length;i++){
 			var minx = tempArr[i].itemx-15;
@@ -214,7 +384,9 @@ export default class Canvas extends React.Component {
 		}
 
 		this.props.detailFormEnable();
+		graph.vals = tempArr;
 
+		this.setState({graph: graph});
 		this.setState({'items':tempArr});
 	 
 	}
@@ -224,11 +396,12 @@ export default class Canvas extends React.Component {
 
 	render() {
 
-		console.log(this.props.moveEnable);
+		console.log(this.state);
+		//console.log(this.props.moveEnable);
 
 		return (
 			<div>
-				<canvas onDragOver={this.preventDefault.bind(this)} onDrop={this.drop.bind(this)} onClick={this.handleClick.bind(this)} ref="canva" className="view"  height={this.state.height}  width={this.state.width} >	
+				<canvas onDragOver={this.preventDefault2.bind(this)} onDrop={this.drop2.bind(this)} onClick={this.handleClick.bind(this)} ref="canva" className="view"  height={this.state.height}  width={this.state.width} >	
 				</canvas>
 			</div>
 		);

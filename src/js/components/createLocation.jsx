@@ -4,6 +4,7 @@ import Navbar from './Navbar.jsx';
 import Canvas from './Canvas.jsx';
 import imageT from '../../images/images.jpg';
 import DetailForm from './DetailForm.jsx';
+import Graph from './graph.js';
 
 
 var img = {
@@ -22,7 +23,7 @@ export default class createLocation extends Component {
 			'items': [
 			'test1', 'test2','test3'
 			],
-			'graph':[],
+			'graph': Graph(),
 			'detailForm': false,
 			moveEnable: false,
 
@@ -32,8 +33,7 @@ export default class createLocation extends Component {
 	
 
 	dragStart(ev, item){
-
-		console.log("Hello");
+		console.log('yes');
 		ev.dataTransfer.setData('text', item);
 	}
 
@@ -70,6 +70,7 @@ export default class createLocation extends Component {
 	  		}
 	  	</div>
 	  	<div className="col-lg-6" >
+
 	  			<Canvas img={img}  detailFormEnable={this.detailFormEnable.bind(this)} updateGraph={this.updateGraph.bind(this)} graph={this.state.graph} moveEnable={this.state.moveEnable} />
 	  	</div>
 	  	<div className="col-lg-3">

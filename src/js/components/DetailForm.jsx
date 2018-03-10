@@ -8,7 +8,7 @@ export default class DetailForm extends React.Component {
 
 	render() {
 		return (
-			<div>
+			<div className="details">
 			<h2> Details </h2>
 				<form className="form">
 					
