@@ -51,7 +51,7 @@ export default class locationFloor extends React.Component {
 		e.preventDefault();
 		var data = Serializer.getData();
 
-		var url = "http://192.168.1.5:8081/saveGraph";
+		var url = "https://sleepy-plains-68877.herokuapp.com/saveGraph";
 		console.log(data);
 		getRequestPromise(url , data);
 
