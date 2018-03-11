@@ -6,6 +6,7 @@ var getRequestPromise = (requestUrl, data) => {
 			dataType: 'json',
 			url: requestUrl,
 			success: result => {
+				console.log(result);
 				resolve({success: "success"})
 			},
 			error: (jqXHR, textStatus, errorThrown) => {

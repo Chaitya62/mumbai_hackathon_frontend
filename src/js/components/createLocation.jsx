@@ -144,6 +144,7 @@ export default class createLocation extends Component {
     	</div>
     	<br />
     	<br />
+    	<br/>
 	  <div className="row">
 	  	<div className="col-lg-3 lists">
 	  		
@@ -159,11 +160,11 @@ export default class createLocation extends Component {
 	  		
 	  		
 	  	</div>
-	  	<div className="col-lg-7" >
+	  	<div className="col-lg-6" >
 
 	  			<Canvas img={img}  detailFormEnable={this.detailFormEnable.bind(this)} updateGraph={this.updateGraph.bind(this)} graph={this.state.graph}  join={this.state.join} />
 	  	</div>
-	  	<div className="col-lg-2">
+	  	<div className="col-lg-3">
 	  		
 	  		{
 	  			detailForm

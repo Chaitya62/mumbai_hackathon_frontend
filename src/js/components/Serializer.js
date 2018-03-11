@@ -30,8 +30,9 @@ var Serializer = (function(){
 		
 	}
 		
-		//var graphString = JSON.stringify(data);
+		var graphString = JSON.stringify(data);
 
+		console.log(graphString);
 		return data;
 	}
 

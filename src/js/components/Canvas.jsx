@@ -195,9 +195,11 @@ export default class Canvas extends React.Component {
 		}
 
 		
+		var bg = '#8ad58d';
+
 		visited[0] = true;
 		if(vals[0].isActive){
-			this.ctx.fillStyle = '#a55eea';
+			this.ctx.fillStyle = bg;
 			this.ctx.fillRect(vals[0].itemx-20, vals[0].itemy-20,40, 40);
 
 		}else{
@@ -222,7 +224,7 @@ export default class Canvas extends React.Component {
 					//this.drawLine(vals[idx].itemx, vals[idx].itemy, vals[cidx].itemx, vals[cidx].itemy);
 					
 					if(vals[cidx].isActive){
-						this.ctx.fillStyle = '#a55eea';
+						this.ctx.fillStyle = bg;
 						this.ctx.fillRect(vals[cidx].itemx-20, vals[cidx].itemy-20,40, 40);
 
 					}else{
