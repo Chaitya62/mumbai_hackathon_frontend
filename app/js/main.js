@@ -27974,7 +27974,7 @@ var locationFloor = function (_React$Component) {
 			e.preventDefault();
 			var data = _Serializer2.default.getData();
 
-			var url = "http://10.0.7.93:8081/saveGraph";
+			var url = "https://sleepy-plains-68877.herokuapp.com/saveGraph";
 			console.log(data);
 			(0, _network2.default)(url, data);
 		}
