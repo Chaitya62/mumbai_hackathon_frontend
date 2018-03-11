@@ -13,6 +13,7 @@ export default class Canvas extends React.Component {
 			items: [],
 			graph: this.props.graph,
 			'moving': false,
+			'joinPoints': [],
 		}
 
 	}
@@ -23,7 +24,7 @@ export default class Canvas extends React.Component {
 		this.ctx = ctx;
 		const rect= this.refs.canva.getBoundingClientRect();
 		this.rect =rect;
-		ctx.fillStyle = 'lightblue';
+		ctx.fillStyle = 'white'
 		ctx.fillRect(0, 0, this.refs.canva.height, this.refs.canva.width);
 
 		
@@ -32,20 +33,20 @@ export default class Canvas extends React.Component {
 
 
 	putItem(img, x, y){
-		//console.log('idhar');
-		//console.log(img);
+		////console.log('idhar');
+		////console.log(img);
 
 		var imgObj = new Image();
 
 		imgObj.src = img;
 
 		
-//		console.log(imgObj);
+//		//console.log(imgObj);
 		imgObj.height = '120px';
 		imgObj.width = '120px';
 
 		this.ctx.drawImage(imgObj, x-15,y-15,30, 30);
-		//console.log(img);
+		////console.log(img);
 	}
 
 
@@ -81,6 +82,8 @@ export default class Canvas extends React.Component {
 
 	preventDefault2(ev){
 
+
+		
 
 		var x = ev.clientX-this.rect.left;
 		var y = ev.clientY-this.rect.top;
@@ -169,7 +172,7 @@ export default class Canvas extends React.Component {
 			
 			adj.get(idx).forEach((cidx)=>{
 				if(visited[cidx] == false){
-					//console.log(cidx);
+					////console.log(cidx);
 					visited[cidx] = true;
 					this.drawLine(vals[idx].itemx, vals[idx].itemy, vals[cidx].itemx, vals[cidx].itemy);
 					
@@ -191,7 +194,7 @@ export default class Canvas extends React.Component {
 			visited.push(false);
 		}
 
-		console.log(vals);
+		
 		visited[0] = true;
 		if(vals[0].isActive){
 			this.ctx.fillStyle = '#a55eea';
@@ -203,7 +206,7 @@ export default class Canvas extends React.Component {
 		}
 		this.putItem(this.props.img[vals[0].item], vals[0].itemx, vals[0].itemy);
 
-		//console.log('its here');
+		////console.log('its here');
 
 		q.push(0);
 
@@ -214,7 +217,7 @@ export default class Canvas extends React.Component {
 			
 			adj.get(idx).forEach((cidx)=>{
 				if(visited[cidx] == false){
-					//console.log(cidx);
+					////console.log(cidx);
 					visited[cidx] = true;
 					//this.drawLine(vals[idx].itemx, vals[idx].itemy, vals[cidx].itemx, vals[cidx].itemy);
 					
@@ -249,8 +252,8 @@ export default class Canvas extends React.Component {
 
 
 
-	// //	console.log('idhar walal');
-	// //	console.log(tempArr);
+	// //	//console.log('idhar walal');
+	// //	//console.log(tempArr);
 	// 	if(tempArr.length == 0) return;
 	// 	if(tempArr[0].isActive){
 			
@@ -287,7 +290,7 @@ export default class Canvas extends React.Component {
 		const ctx = this.ctx;
 
 		ctx.fillStyle = color;
-		//console.log(color);
+		////console.log(color);
 		ctx.beginPath();
 		ctx.moveTo(x1,y1);
 		ctx.lineTo(x2, y2);
@@ -296,17 +299,39 @@ export default class Canvas extends React.Component {
 	}
 
 
-
+	
 	drop2(ev){
+
+	
+
 		ev.preventDefault();
 
-		console.log('hello world');
 		
-		const item = ev.dataTransfer.getData('text');
-	//	console.log(ev.clientX);
+		
+		var item = ev.dataTransfer.getData('text');
+	//	//console.log(ev.clientX);
 	
-		var itemObj = {'item': item, itemx: ev.clientX-this.rect.left, itemy: ev.clientY-this.rect.top, isActive: true}
+		var itemObj = {'type':'','item': item, itemx: ev.clientX-this.rect.left, itemy: ev.clientY-this.rect.top, isActive: true, name:item}
 
+
+		if(item == 'croma' || item == 'shopper' || item == 'bigBazaar' ){
+			itemObj.type = 'shop';
+		} 
+
+		if(item == 'starbucks' || item == 'pizzahut' || item == 'foodcourt' || item == 'mcd'){
+			itemObj.type = 'food';
+		}
+
+		if(item == 'stairs' || item == 'escalatorup'){
+			itemObj.type = 'stairs';
+		}
+
+		if(item == 'washroom'){
+			itemObj.type = 'washroom';
+		}
+
+		
+		
 		var i = this.getActiveNode();
 		var {graph} = this.state;
 
@@ -317,50 +342,50 @@ export default class Canvas extends React.Component {
 			graph.addEdge(i, graph.getVertices()-1);
 		}
 
-		console.log('hello');
+		//console.log('hello');
 
-		//this.setState({graph: graph});
 
 		this.props.updateGraph(graph);
+		// this.setState({graph: graph});
 
 
 	}
 	
 
 
-	drop(ev){
-		ev.preventDefault()
-		const item = ev.dataTransfer.getData('text');
-	//	console.log(ev.clientX);
+	// drop(ev){
+	// 	ev.preventDefault()
+	// 	const item = ev.dataTransfer.getData('text');
+	// //	//console.log(ev.clientX);
 	
-		var itemObj = {'name': '', 'type': '' ,'item': item, itemx: ev.clientX-this.rect.left, itemy: ev.clientY-this.rect.top, isActive: true}
+	// 	var itemObj = {'name': '', 'type': '' ,'item': item, itemx: ev.clientX-this.rect.left, itemy: ev.clientY-this.rect.top, isActive: true}
 
-		var tempArr = this.state.items;
+	// 	var tempArr = this.state.items;
 
-		if(tempArr.length > 0){
-			//console.log('here');
-			tempArr[tempArr.length - 1].isActive = false;
+	// 	if(tempArr.length > 0){
+	// 		////console.log('here');
+	// 		tempArr[tempArr.length - 1].isActive = false;
 
-		//	this.drawLine(ax.itemx, ax.itemy, itemObj.itemx, itemObj.itemy, 'black');
-		}
+	// 	//	this.drawLine(ax.itemx, ax.itemy, itemObj.itemx, itemObj.itemy, 'black');
+	// 	}
 
-		tempArr.push(itemObj);
+	// 	tempArr.push(itemObj);
 
-		this.setState({'items': tempArr});
-		this.props.updateGraph(tempArr);
+	// 	this.setState({'items': tempArr});
+	// 	this.props.updateGraph(tempArr);
 
-		var x = ev.clientX-this.rect.left;
-		var y = ev.clientY-this.rect.top;
+	// 	var x = ev.clientX-this.rect.left;
+	// 	var y = ev.clientY-this.rect.top;
 
 
 
-		// this.ctx.fillStyle = 'white';
-		// this.ctx.fillRect(x-20, y-20,40, 40);
-		// this.putItem(this.props.img[item], ev.clientX-this.rect.left, ev.clientY-this.rect.top);
+	// 	// this.ctx.fillStyle = 'white';
+	// 	// this.ctx.fillRect(x-20, y-20,40, 40);
+	// 	// this.putItem(this.props.img[item], ev.clientX-this.rect.left, ev.clientY-this.rect.top);
 		
 
 
-	}
+	// }
 
 
 
@@ -377,12 +402,15 @@ export default class Canvas extends React.Component {
 		var x = ev.clientX-this.rect.left;
 		var y = ev.clientY-this.rect.top;
 
-		//console.log(x);
-		//console.log(y);
+		////console.log(x);
+		////console.log(y);
 
 
-		var {graph} = this.state;
+		var graph = this.state.graph;
 		var tempArr = this.state.graph.vals;
+
+		console.log('apne kam ka ');
+		console.log(graph);
 
 		var curri = -1;
 
@@ -391,23 +419,35 @@ export default class Canvas extends React.Component {
 			var maxx = tempArr[i].itemx+15;
 			var miny = tempArr[i].itemy-15;
 			var maxy =  tempArr[i].itemy+15;
-			//console.log(minx + " " + maxx + " " + miny + " " + maxy );
+			////console.log(minx + " " + maxx + " " + miny + " " + maxy );
 			if(x >= minx && x <= maxx && y >= miny && y <= maxy){
-			//	console.log('lsadflaslfd');
-			
-				for(var j = 0;j<tempArr.length;j++) tempArr[j].isActive = false;
-				tempArr[i].isActive = true;
+			//	//console.log('lsadflaslfd');
+				
+				// if(this.state.join){
+
+				// }else{
+					
+					for(var j = 0;j<tempArr.length;j++) tempArr[j].isActive = false;
+					tempArr[i].isActive = true;
 				curri = i;
 			}
 
 		}
 
-			console.log(curri);
+			
+
+			
 
 
+			
+
+			//console.log(curri);
+			if(curri !== -1){
 			this.props.detailFormEnable(curri);
 			graph.vals = tempArr;
+			}
 
+		
 			this.setState({graph: graph});
 			this.setState({'items':tempArr});
 		
@@ -420,9 +460,9 @@ export default class Canvas extends React.Component {
 
 	render() {
 
-		console.log(this.state);
+		console.log("check " + this.props.join);
 
-		//console.log(this.props.moveEnable);
+		////console.log(this.props.moveEnable);
 
 		return (
 

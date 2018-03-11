@@ -37,7 +37,7 @@ var img = {
 	'pizzahut': pizzahut,
 	'shopper': shopper,
 	'stairsdown': stairsdown,
-	'stairsup': stairsup,
+	'stairs': stairsup,
 	'starbucks': starbucks
 };
 
@@ -54,17 +54,15 @@ export default class createLocation extends Component {
 
 			'items': [
 				'bigBazaar','croma',
-				'escalatorup',
 				'foodcourt',
 				'gamezone',
 				'mcd',
 				'washroom',
 				'pizzahut',
 				'shopper',
-				'stairsdown',
-				'stairsup',
-				'starbucks'
+				'stairs',
 			],
+			'join': false,
 			'graph': graphs[currFloor],
 			'detailForm': false,
 			moveEnable: false,
@@ -120,12 +118,23 @@ export default class createLocation extends Component {
 		this.setState({'graph':graph});
 	}
 
+	joinTool(){
+		console.log('here it is asdfbicasf');
+		var fx = this.state.join;
+
+		console.log("hello " + this.state.join);
+
+		this.setState({join: !fx});
+		return;
+
+	}
+
 	render() {
+
 
 		var detailForm = (this.state.detailForm ? <DetailForm  updateName={this.updateName.bind(this)} vals={this.state.currdetails} idx={this.state.detailsOf} /> :  "" );
 
-		console.log('render');
-		console.log(this.state.graph);
+		
 
 		return (
     <div className="create-location">
@@ -143,18 +152,18 @@ export default class createLocation extends Component {
 	  				return (
 	  					<div key={j} >
 	  					<img className="item"  draggable="true" onDragStart={ (e)=>{this.dragStart(e, item)} } src={img[item]} />
-	  					<p className="text lead">{item}</p>
+	  					<p className="text lead" >{item}</p>
 	  					</div>)
 	  			})
 	  		}
 	  		
 	  		
 	  	</div>
-	  	<div className="col-lg-6" >
+	  	<div className="col-lg-7" >
 
-	  			<Canvas img={img}  detailFormEnable={this.detailFormEnable.bind(this)} updateGraph={this.updateGraph.bind(this)} graph={this.state.graph}  />
+	  			<Canvas img={img}  detailFormEnable={this.detailFormEnable.bind(this)} updateGraph={this.updateGraph.bind(this)} graph={this.state.graph}  join={this.state.join} />
 	  	</div>
-	  	<div className="col-lg-3">
+	  	<div className="col-lg-2">
 	  		
 	  		{
 	  			detailForm

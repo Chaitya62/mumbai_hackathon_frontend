@@ -41,9 +41,19 @@
 }
 
 .delete{
-	background: lightblue;
+	background: rgba(255, 0, 0, 0.2);
 	padding: 10px;
 	display: inline;
 	margin: 2px;
 	cursor: pointer;
+}
+
+.joinTool{
+	display: inline;
+	position: relative;
+	color: white;
+	font-size: 24px;
+	cursor: pointer;
+	margin-left: 10px;
+
 }

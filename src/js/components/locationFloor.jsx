@@ -99,7 +99,7 @@ export default class locationFloor extends React.Component {
 				</div>
 
 				<div className="footer">
-					<button onClick={this.onClick.bind(this)}>
+					<button className="btn btn-default center savebutton" onClick={this.onClick.bind(this)}>
 						Save
 					</button>
 				</div>
