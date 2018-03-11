@@ -23,12 +23,16 @@ var Serializer = (function(){
 		}
 
 		graphsObj.push(graph);
+
+		var data = {'data':''};
+
+		data.data = graphsObj;
 		
 	}
 		
-		var graphString = JSON.stringify(graphsObj);
+		//var graphString = JSON.stringify(data);
 
-		return graphString;
+		return data;
 	}
 
 

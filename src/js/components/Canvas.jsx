@@ -11,7 +11,8 @@ export default class Canvas extends React.Component {
 			height: '600',
 			width: '600',
 			items: [],
-			graph: this.props.graph
+			graph: this.props.graph,
+			'moving': false,
 		}
 
 	}
@@ -22,7 +23,7 @@ export default class Canvas extends React.Component {
 		this.ctx = ctx;
 		const rect= this.refs.canva.getBoundingClientRect();
 		this.rect =rect;
-		ctx.fillStyle = 'blue';
+		ctx.fillStyle = 'lightblue';
 		ctx.fillRect(0, 0, this.refs.canva.height, this.refs.canva.width);
 
 		
@@ -81,13 +82,11 @@ export default class Canvas extends React.Component {
 	preventDefault2(ev){
 
 
-		console.log('heas');
-
 		var x = ev.clientX-this.rect.left;
 		var y = ev.clientY-this.rect.top;
 
-		var vals = this.state.graph.vals;
 
+		var vals = this.state.graph.vals;
 
 		var i = this.getActiveNode();
 		if(i != -1) {
@@ -142,12 +141,14 @@ export default class Canvas extends React.Component {
 
 	drawAll2(){
 
+		if(!this.state.graph) return;
+
 		var graph = this.state.graph;
 		var adj = graph.adj;
 		var n = graph.getVertices();
-
-		if(n == 0) return;
 		
+		if(n == 0) return;
+
 		var vals = graph.vals;
 
 		var q = [];
@@ -193,9 +194,12 @@ export default class Canvas extends React.Component {
 		console.log(vals);
 		visited[0] = true;
 		if(vals[0].isActive){
-			this.ctx.fillStyle = 'white';
+			this.ctx.fillStyle = '#a55eea';
 			this.ctx.fillRect(vals[0].itemx-20, vals[0].itemy-20,40, 40);
 
+		}else{
+			this.ctx.fillStyle = 'white';
+			this.ctx.fillRect(vals[0].itemx-20, vals[0].itemy-20,40, 40);
 		}
 		this.putItem(this.props.img[vals[0].item], vals[0].itemx, vals[0].itemy);
 
@@ -215,9 +219,12 @@ export default class Canvas extends React.Component {
 					//this.drawLine(vals[idx].itemx, vals[idx].itemy, vals[cidx].itemx, vals[cidx].itemy);
 					
 					if(vals[cidx].isActive){
-						this.ctx.fillStyle = 'white';
+						this.ctx.fillStyle = '#a55eea';
 						this.ctx.fillRect(vals[cidx].itemx-20, vals[cidx].itemy-20,40, 40);
 
+					}else{
+						this.ctx.fillStyle = 'white';
+						this.ctx.fillRect(vals[cidx].itemx-20, vals[cidx].itemy-20,40, 40);
 					}
 
 					this.putItem(this.props.img[vals[cidx].item], vals[cidx].itemx, vals[cidx].itemy);
@@ -312,7 +319,7 @@ export default class Canvas extends React.Component {
 
 		console.log('hello');
 
-		this.setState({graph: graph});
+		//this.setState({graph: graph});
 
 		this.props.updateGraph(graph);
 
@@ -326,7 +333,7 @@ export default class Canvas extends React.Component {
 		const item = ev.dataTransfer.getData('text');
 	//	console.log(ev.clientX);
 	
-		var itemObj = {'item': item, itemx: ev.clientX-this.rect.left, itemy: ev.clientY-this.rect.top, isActive: true}
+		var itemObj = {'name': '', 'type': '' ,'item': item, itemx: ev.clientX-this.rect.left, itemy: ev.clientY-this.rect.top, isActive: true}
 
 		var tempArr = this.state.items;
 
@@ -356,7 +363,15 @@ export default class Canvas extends React.Component {
 	}
 
 
+
+
+
 	handleClick(ev){
+
+
+
+
+
 		ev.preventDefault();
 
 		var x = ev.clientX-this.rect.left;
@@ -369,6 +384,8 @@ export default class Canvas extends React.Component {
 		var {graph} = this.state;
 		var tempArr = this.state.graph.vals;
 
+		var curri = -1;
+
 		for(var i = 0;i<tempArr.length;i++){
 			var minx = tempArr[i].itemx-15;
 			var maxx = tempArr[i].itemx+15;
@@ -380,15 +397,21 @@ export default class Canvas extends React.Component {
 			
 				for(var j = 0;j<tempArr.length;j++) tempArr[j].isActive = false;
 				tempArr[i].isActive = true;
+				curri = i;
 			}
 
 		}
 
-		this.props.detailFormEnable();
-		graph.vals = tempArr;
+			console.log(curri);
 
-		this.setState({graph: graph});
-		this.setState({'items':tempArr});
+
+			this.props.detailFormEnable(curri);
+			graph.vals = tempArr;
+
+			this.setState({graph: graph});
+			this.setState({'items':tempArr});
+		
+		
 	 
 	}
 
@@ -398,11 +421,15 @@ export default class Canvas extends React.Component {
 	render() {
 
 		console.log(this.state);
+
 		//console.log(this.props.moveEnable);
 
 		return (
+
+			
+
 			<div>
-				<canvas onDragOver={this.preventDefault2.bind(this)} onDrop={this.drop2.bind(this)} onClick={this.handleClick.bind(this)} ref="canva" className="view"  height={this.state.height}  width={this.state.width} >	
+				<canvas onDragOver={this.preventDefault2.bind(this)}  onDrop={this.drop2.bind(this)} onClick={this.handleClick.bind(this)} ref="canva" className="view"  height={this.state.height}  width={this.state.width} >	
 				</canvas>
 			</div>
 		);

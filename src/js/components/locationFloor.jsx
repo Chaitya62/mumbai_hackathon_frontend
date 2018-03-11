@@ -3,6 +3,7 @@ import {Link, Redirect} from 'react-router-dom';
 import dataSingleton from './dataSingleton.js';
 import Graph from './graph.js';
 import Serializer from './Serializer.js';
+import getRequestPromise from './network.js';
 
 export default class locationFloor extends React.Component {
 
@@ -36,6 +37,27 @@ export default class locationFloor extends React.Component {
 
 	}
 
+	deleteFloor(e, i, self){
+		var graphs = this.state.graphs;
+
+		graphs.splice(i, 1);
+
+		this.setState({'graphs': graphs});
+
+
+	}
+
+	onClick(e){
+		e.preventDefault();
+		var data = Serializer.getData();
+
+		var url = "http://192.168.1.5:8081/saveGraph";
+		console.log(data);
+		getRequestPromise(url , data);
+
+
+	}
+
 	render() {
 
 		console.log(this.state.graphs);
@@ -48,16 +70,40 @@ export default class locationFloor extends React.Component {
 		}
 
 		return (
-
-
 			<div>
+				<h2 className="header">Floors</h2>
+
+				<div className="container-fluid floors">
 				{
 					this.state.graphs.map((graph, i)=>(
-						<div to="/floor" className="floorWidget" onClick={(e)=>{this.setFloor(e, i, self)}}  key={i} >Hello</div>
+						<div  className=" effect5  floorWidget card"   key={i} >
+						<div className="card-body">
+							
+							<h5 className="card-title">{i+1}F</h5>
+							<div className="card-text">
+								<span className="edit" onClick={(e)=>{this.setFloor(e, i, self)}}>edit</span> 
+								<span className="delete" onClick={(e)=>{this.deleteFloor(e, i, self)}} >delete</span>
+							</div>
+						</div>
+						</div>
 					)
 					)
 				}
-				<div className="addButton btn btn-default" onClick={this.addFloor.bind(this)}>+</div>					
+				<div className="addButton card" onClick={this.addFloor.bind(this)}>
+					<div className="card-body">
+						<h5 className="card-title">+</h5>
+						<div className="card-text">Add floor</div>
+					</div>
+
+				</div>
+				</div>
+
+				<div className="footer">
+					<button onClick={this.onClick.bind(this)}>
+						Save
+					</button>
+				</div>
+
 			</div>
 		);
 	}

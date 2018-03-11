@@ -1,8 +1,25 @@
 .item{
-	display: block;
+	display: inline-block;
 	background: yellow;
 	color: black;
-	width: 100px;
+	width: 60px;
 	margin: 10px;
 
+}
+
+p.text{
+	display: inline;
+}
+
+.lists{
+	height: 90vh;
+	overflow-y: scroll;
+}
+
+.btn-back{
+	color: white;
+}
+
+.btn-back:hover{
+	color: white;
 }
