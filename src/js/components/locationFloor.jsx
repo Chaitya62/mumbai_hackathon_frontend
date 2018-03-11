@@ -51,7 +51,7 @@ export default class locationFloor extends React.Component {
 		e.preventDefault();
 		var data = Serializer.getData();
 
-		var url = "http://192.168.1.5:8081/saveGraph";
+		var url = "http://10.0.7.93:8081/saveGraph";
 		console.log(data);
 		getRequestPromise(url , data);
 

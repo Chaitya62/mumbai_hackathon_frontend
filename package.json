@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "build": "webpack --config webpack.config.js",
     "test": "karma start",
     "start": "node server.js"
   },
@@ -40,6 +41,6 @@
     "script-loader": "^0.7.0",
     "style-loader": "^0.18.2",
     "url-loader": "^1.0.1",
-    "webpack": "^3.0.0"
+    "webpack": "^3.11.0"
   }
 }
